@@ -10,10 +10,11 @@ const VideoDetail = () => {
   const [videoDetail, setVideoDetail] = useState(null);
   const { id } = useParams();
 
-  // const { snippet } = videoDetail;
+  // const { snippet: { title } = {} } = videoDetail || {};
+  const title = videoDetail?.snippet?.title ?? "";
 
   useEffect(() => {
-    fetchFromAPI(`videos?part=snippet, statistics&id=${id}`).then((data) =>
+    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`).then((data) =>
       setVideoDetail(data.items[0])
     );
   }, [id]);
@@ -28,9 +29,11 @@ const VideoDetail = () => {
               className="react-player"
               controls
             />
-            <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
-              {videoDetail.snippet.title}
-            </Typography>
+            {videoDetail && (
+              <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
+                {title}
+              </Typography>
+            )}
           </Box>
         </Box>
       </Stack>
